@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "pg": "^7.6.0"
+    "pg": "^7.8.0"
   }
 }

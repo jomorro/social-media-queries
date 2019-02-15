@@ -31,13 +31,13 @@ app.post('/users', (req, res) => {
         res.status(200).send(JSON.stringify(result.rows[0]));
     });
 });
-
+// money sign in front of numbers protect from potential injection attack that could be ran as a subsql command.
 app.post('/users/:id', (req, res) => {
     const text = 'INSERT INTO posts (title, body, user_id) VALUES ($1, $2, $3) RETURNING *';
     const values = [req.body.title, req.body.body, req.params.id];
     client.query(text, values, (err, result) => {
         if (err) {
-            res.status(404).send({});
+            res.status(500).send();
             return console.log(err);
         }
         res.status(200).send(JSON.stringify(result.rows[0]));
@@ -48,7 +48,7 @@ app.get('/users/:id', (req, res) => {
     const id = req.params.id;
     client.query('SELECT posts.id as id, users.id as user_id, title, body, username, bio FROM users LEFT JOIN posts ON (users.id = posts.user_id) WHERE (users.id=($1))', [id], (err, result) => {
        if (err) {
-            res.status(500).send({});
+            res.status(500).send();
             return console.log(err);
         }
         if (result.rowCount == 0) {
